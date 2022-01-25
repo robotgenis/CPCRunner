@@ -4,6 +4,7 @@ from subprocess import Popen, PIPE
 import os
 from time import time
 import random
+import shutil
 
 random.seed()
 
@@ -65,5 +66,7 @@ def runProgram(typ:str, tim:float, prog:str, inps:list):
         print("o:",str(stdout).split("\\r\\n"))
     if stderr:
         print("e:",str(stderr))
+    
+    shutil.rmtree(runFolderPath)
 
 runProgram(TYPE_PYTHON, 6.0, "print('hi')", [])

@@ -1,4 +1,4 @@
-package runs;
+package examples;
 
 
 public class test{
