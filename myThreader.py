@@ -4,15 +4,15 @@ import threading
 import sys
 
 def runCommandThread(cmd_list:list):
+	p = Popen(cmd_list, stdout=PIPE, stderr=PIPE, stdin=sys.stdin, shell=True) #
 	st = time()
-	p = Popen(cmd_list, stdout=PIPE, stderr=PIPE, shell=True)
 	stdout = p.stdout.read()
 	stderr = p.stderr.read()
 	if stdout:
+		print("t:", time() - st)
 		print("o:",str(stdout))
 	if stderr:
 		print("e:",str(stderr))
-	print("t:", time() - st)
 	global commandComplete
 	commandComplete = True
 
@@ -56,8 +56,7 @@ for i in sys.argv:
 for i in sys.argv:
 	arr = i.split("=")
 	if arr[0] == "f" and len(arr) >= 2:
-		f = "python " + str(arr[1])
-		print(f)
+		f = str(arr[1])
 		runCommandWithTimout(f, timers)
 		break
 

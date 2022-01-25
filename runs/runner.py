@@ -1,7 +1,9 @@
 import time
 
-a = input()
-print("[" + a + "]")
+
+for i in range(4):
+	a = input()
+	print("[" + a + "]")
 
 
 # for i in range(10):
