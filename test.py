@@ -7,9 +7,9 @@ def runCommandThread(cmd_list:list):
 	stdout = p.stdout.read()
 	stderr = p.stderr.read()
 	if stdout:
-		print(stdout)
+		print("o:",str(stdout))
 	if stderr:
-		print(stderr)
+		print("e:",str(stderr))
 
 
 def waitThread(t:float):
@@ -25,12 +25,12 @@ def runCommandWithTimout(cmd_list:list, t:float):
 
 	threadTimer.join()
 	if(threadCommand.is_alive()):
-		print("Out of time")
+		print("e:Out of time")
 
 	print("Done")
 
 
 cmd_list = ['python runner.py']
-timers = 6.0
+timers = 1.0
 
 runCommandWithTimout(cmd_list, timers)
