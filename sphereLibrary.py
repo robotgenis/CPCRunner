@@ -24,10 +24,11 @@ class TestCase:
         return checkStr == self.outp
 
 class Problem:
-    def __init__(self, testCaseList:list, timeLimit:float, memoryLimit:int):
+    def __init__(self, testCaseList:list, timeLimit:float, memoryLimit:int, problemPage:str):
         self.testCaseList = testCaseList
         self.timeLimit = timeLimit
         self.memoryLimit = memoryLimit
+        self.problemPage = problemPage
     def getInput(self, index:int):
         return self.testCaseList[index].inpu
     def checkOutput(self, index:int, outp:str):
