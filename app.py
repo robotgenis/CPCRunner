@@ -1,6 +1,4 @@
 from flask import Flask, request
-from runProgram import runProgram
-import json
 
 app = Flask(__name__)
 
@@ -8,15 +6,6 @@ app = Flask(__name__)
 
 @app.route("/", methods=['get','post'])
 def hello():
-    j = request.get_json(force=True)
-    typ = j["type"]
-    code = j["code"]
-    timer = j["timer"]
-    inputs = j["inputs"]
-    
-    result = runProgram(typ, timer, code, inputs)
-    print(result)
-    
-    return json.dumps(result)
+    return "hello"
 
 

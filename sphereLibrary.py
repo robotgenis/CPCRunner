@@ -28,7 +28,7 @@ class Problem:
         self.testCaseList = testCaseList
         self.timeLimit = timeLimit
         self.memoryLimit = memoryLimit
-    def getInput(self, index:int) -> str:
+    def getInput(self, index:int):
         return self.testCaseList[index].inpu
     def checkOutput(self, index:int, outp:str):
         return self.testCaseList[index].checkOutput(outp)
