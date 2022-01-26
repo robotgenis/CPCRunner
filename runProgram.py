@@ -67,12 +67,12 @@ def runProgram(typ:str, tim:float, prog:str, inps:list):
 
     testRuns = []
 
-    for i in inps:
+    for currInput in inps:
         runCmd = "python myThreader.py t=" + str(tim) + " \"c=" + cmd + "\" f=" + runFolderPath + ""
         p = Popen(runCmd, stdout=PIPE, stderr=PIPE, stdin=PIPE)
 
         # python test.py t=6.0 "f=python C:\Users\young\Documents\Code\CPC\Runner\CPCRunner\runner.py"
-        stdout, stderr = p.communicate(i.encode("ascii"))
+        stdout, stderr = p.communicate(currInput.encode("ascii"))
 
         if stdout:
             out = stdout.decode('ascii').split("\r\n")
@@ -87,29 +87,33 @@ def runProgram(typ:str, tim:float, prog:str, inps:list):
                     output = eval(i[2:])
                 elif len(i) > 0 and i[0] == "e":
                     error = i[2:]
-            testRuns.append((i,timer,output, error))
+            testRuns.append((currInput,timer,output, error))
 
         if stderr:
             print("e:",str(stderr))
-            return (OUTPUT_ERROR, str(stderr))
+            return []
     print(testRuns)       
         
     shutil.rmtree(runFolderPath)
+    
+    return testRuns
 
-runProgram(TYPE_PYTHON, 6.0, """
-print('[\\n',input(),'\\n]')
-""", ["a", "hi there", "your mom"])
-# runProgram(TYPE_JAVA,6.0, """public class Hello{
-# 	public static void main(String[] args){
-# 		System.out.println("hi");
-# 	}
-# }""", [])
-# runProgram(TYPE_CPP, 6.0, """
-# #include <iostream>
 
-# using namespace std;
-# int main() {
-#     cout << "Hello World!";
-#     return 0;
-# }             
-# """, [])
+if __name__ == "__main__":
+    runProgram(TYPE_PYTHON, 6.0, """
+    print('[\\n',input(),'\\n]')
+    """, ["a", "hi there", "your mom"])
+    # runProgram(TYPE_JAVA,6.0, """public class Hello{
+    # 	public static void main(String[] args){
+    # 		System.out.println("hi");
+    # 	}
+    # }""", [])
+    # runProgram(TYPE_CPP, 6.0, """
+    # #include <iostream>
+
+    # using namespace std;
+    # int main() {
+    #     cout << "Hello World!";
+    #     return 0;
+    # }             
+    # """, [])
