@@ -1,9 +1,8 @@
 
 from sphere_engine import CompilersClientV4
 from sphere_engine.exceptions import SphereEngineException
-from time import sleep
 import requests
-from sympy import true
+from constants import COMILERS
 
 # define access parameters
 accessToken = '7dffbeac5ce76c2ee696e93d6fed578a'
@@ -12,8 +11,6 @@ endpoint = '63bebb51.compilers.sphere-engine.com'
 # initialization
 client = CompilersClientV4(accessToken, endpoint)
 
-COMPILER_PYTHON = 116
-COMPILER_CPP = 1
 
 
 class TestCase:
@@ -80,7 +77,7 @@ if __name__ == "__main__":
     source = """
     print(input())
     """
-    compiler = COMPILER_PYTHON
+    compiler = COMILERS['COMPILER_PYTHON']
     inpu = '2017'
 
     t = TestCase("2017", "2017")

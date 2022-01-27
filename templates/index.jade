@@ -1,0 +1,24 @@
+extends ./layout.jade
+
+- var title = "Problem Submission"
+
+block content 
+  include nav.jade
+  form(action="/submit" method="post")
+    .container 
+      label(for="problem") Problem
+      select#problem(name="problem" style="width: 200px;")
+        option(value="1") Problem A
+        option(value="2") Problem B
+    .container
+      label(for="compiler") Compiler
+      select#compiler(name="compiler" style="width: 200px;")
+        option(value="COMPILER_PYTHON") Python
+        option(value="COMPILER_CPP") C++
+    .container
+      label(for="code") Enter Code Below
+      br
+      textarea#code.code(name="code", rows="20", cols="100", placeholder="enter code")
+    .container
+      label(for="submit") Submit Code
+      button(type="submit", value="Submit") Submit

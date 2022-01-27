@@ -1,12 +1,14 @@
 from sphereLibrary import Problem, Submission, TestCase
 
+#SOlution for test problem
+#print(sum(list(map(int,input().split()))))
 
 _problems = [
     Problem(
-        [TestCase("1","2"), TestCase("5","10"), TestCase("0","0")],
+        [TestCase("1 4","5"), TestCase("23 1","24"), TestCase("56 2","58")],
         1.0,
         1024,
-        "problemA.html",
+        "a",
     )
 ]
 
