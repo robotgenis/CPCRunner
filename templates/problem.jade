@@ -1,0 +1,19 @@
+extends ./layout.jade
+
+- var title = visual.title
+
+block content
+  include ./nav.jade
+  .container
+    h2= visual.heading
+    p= visual.description
+    h4 Input
+    p= visual.input
+    h4 Output
+    p= visual.output
+  .container
+    h4(style="padding: 0px; margin-top: 0px;") Examples
+    pre.code.container.input
+      p= visual.exampleInput
+    pre.code.container.output
+      p= visual.exampleOutput

@@ -7,6 +7,7 @@ clientId = "8d4f846be4e1d90c42a9dd64fc544cd"
 clientSecret = "d9e2b9a4474c5eb499106490a9c2b52641992066385dec916ea4c8d0c186b997"
 url = "https://api.jdoodle.com/v1/execute"
 
+
 class TestCase:
     def __init__(self, inpu:str, outp:str):
         self.input = inpu
@@ -15,11 +16,10 @@ class TestCase:
         return checkStr.strip() == self.output
 
 class Problem:
-    def __init__(self, testCast:TestCase, timeLimit:float, memoryLimit:int, problemPage:str):
+    def __init__(self, testCast:TestCase, timeLimit:float, memoryLimit:int):
         self.testCase = testCast
         self.timeLimit = timeLimit
         self.memoryLimit = memoryLimit
-        self.problemPage = problemPage
 
 class Submission:
     def __init__(self, source:str, compiler:str, problem:Problem):
@@ -43,8 +43,8 @@ class Submission:
         headers = {'Content-type': 'application/json'}
         print("Running Submission", data)
         
-        # content = requests.post(url, data=json.dumps(data), headers=headers).content
-        content = b'{"output":"2\\n","statusCode":200,"memory":"8152","cpuTime":"0.00"}'
+        content = requests.post(url, data=json.dumps(data), headers=headers).content
+        # content = b'{"output":"2\\n","statusCode":200,"memory":"8152","cpuTime":"0.00"}'
         
         self.output = json.loads(content.decode('ascii'))
         self.checkSubmission()
@@ -69,15 +69,18 @@ class Submission:
             return
         self.results['statusCode'] = constants.STATUS_WRONG_ANSWER
         return
-        
-  
+   
+def problemFromDatebase(problem):
+    tc = TestCase(problem['testCase']['input'], problem['testCase']['output'])
+    
+    return Problem(tc, problem['timeLimit'], problem['memoryLimit'])
             
 if __name__ == "__main__":
     # API usage
     
     tc = TestCase("1 1", "2")
     
-    p = Problem(tc, 1, 1000000, "")
+    p = Problem(tc, 1, 1000000)
     
     src = """
 print(sum(list(map(int,input().split()))))
@@ -86,4 +89,5 @@ print(sum(list(map(int,input().split()))))
     s = Submission(src, constants.COMPILER_PYTHON3, p)
     
     s.createSubmission()
+
     

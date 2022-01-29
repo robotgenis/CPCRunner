@@ -7,14 +7,30 @@ block content
   form(action="/submit" method="post")
     .container 
       label(for="problem") Problem
-      select#problem(name="problem" style="width: 200px;")
-        option(value="1") Problem A
-        option(value="2") Problem B
+      select#problem(name="problem", style="width: 200px;text-transform: uppercase;", setvalue=id)
+        - each letter in problems
+          option(value=letter, style="text-transform: uppercase;")= letter
+      script 
+        | $(document).ready(function(){
+        |   $("#problem").val($("#problem").attr("setvalue")).change();
+        | });
     .container
       label(for="compiler") Compiler
-      select#compiler(name="compiler" style="width: 200px;")
-        option(value="COMPILER_PYTHON") Python
-        option(value="COMPILER_CPP") C++
+      select#compiler(name="compiler", style="width: 200px;")
+        option(value="cpp17") C++
+        option(value="java") JAVA
+        option(value="python3", selected) Python
+      script
+        | $(document).ready(function(){
+        |   if (typeof(Storage) !== "undefined") {
+        |     $("#compiler").val(localStorage.getItem("compiler")).change();
+        |   } 
+        |   $("#compiler").change(function(){
+        |     if (typeof(Storage) !== "undefined") {
+        |       localStorage.setItem("compiler", $("#compiler").val());
+        |     } 
+        |   });
+        | });
     .container
       label(for="code") Enter Code Below
       br
