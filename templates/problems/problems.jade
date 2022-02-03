@@ -2,11 +2,9 @@ extends ./libs/layout.jade
 
 block content 
   include ./libs/nav.jade
-  .container 
+  .container-fluid
     .row
-      .col-sm-2 
-      .col-lg-8
-        .jumbotron 
+      .col-lg-12.border.p-5
           h1.display-4 Problems
           table.table.table-hover
             thead
@@ -18,4 +16,3 @@ block content
               tr.clickable(data-href="/test")
                 th(scope="row")= val[0]
                 th= val[1]
-      .col-sm-2

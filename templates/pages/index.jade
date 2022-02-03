@@ -1,14 +1,12 @@
 extends ./libs/layout.jade
 
-block content 
+block content
   include ./libs/nav.jade
-  .container 
+  .container-fluid
     .row
-      .col-sm-2 
-      .col-lg-8
-        .jumbotron 
-          h1.display-4 Welcome to CPC! 
-          p The Ohio State University Competitive Programming Club is club focused competing in algorithm based coding competition. 
-            a(href="/about") Learn More
-            | .
-      .col-sm-2
+      .col-lg-8.border.p-5
+        h1.display-4 Welcome to CPC! 
+        p The Ohio State University Competitive Programming Club is club focused competing in algorithm based coding competition. 
+          a(href="/about") Learn More
+          | .
+      .col-md-4.border

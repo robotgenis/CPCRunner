@@ -1,15 +1,16 @@
-.navbar.navbar-expand-md.navbar-light.bg-light
+.navbar.navbar-expand-md.navbar-light.border
   .container-fluid 
     a.navbar-brand(href="#") Competitve Programming Club
     button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarContent", aria-controls="navbarContent", aria-expanded="false", aria-label="Toggle navigation")
       span.navbar-toggler-icon
-    #navbarContent.collapse.navbar-collapse
-      ul.navbar-nav.mr-auto 
+    #navbarContent.collapse.navbar-collapse.border-left.ml-2.pl-2
+      ul.navbar-nav.mr-auto.w-100
         li.nav-item 
           a.nav-link(href="/") Home
         li.nav-item 
           a.nav-link(href="/about") About
         li.nav-item 
           a.nav-link(href="/problems") Problems
-      a.nav-link(href="/login")
-        btn.btn.btn-outline-primary(type="button") Login
+        li.nav-item.ml-auto
+        li.nav-item
+          a.nav-link(href="/login") Login
