@@ -21,15 +21,30 @@ def send_problem(path):
     
     return render_template("problem.jade",visual=prob['visual'], problems=problems, id=prob['id'])
 
-@app.route("/", methods=['get'])
-def home():
+@app.route("/submission", methods=['get'])
+def submission():
     id = ""
     if("id" in request.args): 
         id = request.args['id']
     
     problems = myDatabase.getShownProblemsIDs()
     
-    return render_template("index.jade", problems=problems, id=id)
+    return render_template("submission.jade", problems=problems, id=id)
+    
+#open pages
+@app.route("/", methods=['get'])
+def home():
+    return render_template("pages/index.jade")
+
+@app.route("/login", methods=['get'])
+def login():
+    return render_template("pages/login.jade")
+    
+
+@app.route('/about', methods=['get'])
+def about():
+    return render_template("pages/about.jade")
+    
 
 @app.route("/submit", methods=['post'])
 def submit():
@@ -52,7 +67,3 @@ def submit():
     sub.createSubmission()
     
     return "Submitted: " + str(sub.results)
-
-@app.route("/view", methods=['get'])
-def submission():
-    return "Hi"
