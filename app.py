@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from urllib import response
 from flask import Flask, request,send_from_directory, redirect, render_template
-import myDatabase
+import mySQLDatabase
 import myCompiler
 
 app = Flask(__name__)
@@ -11,25 +11,25 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 def send_public(path):
     return send_from_directory('public', path)
 
-@app.route('/problem/<path:path>')
-def send_problem(path):
-    prob = myDatabase.getProblem(path)
+# @app.route('/problem/<path:path>')
+# def send_problem(path):
+#     prob = myDatabase.getProblem(path)
     
-    if not prob: return redirect("/")
+#     if not prob: return redirect("/")
     
-    problems = myDatabase.getShownProblemsIDs()
+#     problems = myDatabase.getShownProblemsIDs()
     
-    return render_template("problem.jade",visual=prob['visual'], problems=problems, id=prob['id'])
+#     return render_template("problem.jade",visual=prob['visual'], problems=problems, id=prob['id'])
 
-@app.route("/submission", methods=['get'])
-def submission():
-    id = ""
-    if("id" in request.args): 
-        id = request.args['id']
+# @app.route("/submission", methods=['get'])
+# def submission():
+#     id = ""
+#     if("id" in request.args): 
+#         id = request.args['id']
     
-    problems = myDatabase.getShownProblemsIDs()
+#     problems = myDatabase.getShownProblemsIDs()
     
-    return render_template("submission.jade", problems=problems, id=id)
+#     return render_template("submission.jade", problems=problems, id=id)
     
 #open pages
 @app.route("/", methods=['get'])
@@ -44,26 +44,32 @@ def login():
 @app.route('/about', methods=['get'])
 def about():
     return render_template("pages/about.jade")
-    
 
-@app.route("/submit", methods=['post'])
-def submit():
-    form = request.form.to_dict()
+
+@app.route('/problems', methods=['get'])
+def problems():
+    arr = mySQLDatabase.PROBLEMS_getProblemsInfo()
     
-    compiler = form['compiler']
-    problem = form['problem']
-    code = form['code']
+    return render_template("problems/problems.jade", problems=arr)
+
+# @app.route("/submit", methods=['post'])
+# def submit():
+#     form = request.form.to_dict()
     
-    print(compiler, problem, code)
+#     compiler = form['compiler']
+#     problem = form['problem']
+#     code = form['code']
     
-    prob = myDatabase.getProblem(problem)
+#     print(compiler, problem, code)
     
-    if not prob: return "ERROR"
+#     prob = myDatabase.getProblem(problem)
     
-    compileProblem = myCompiler.problemFromDatebase(prob)
+#     if not prob: return "ERROR"
     
-    sub = myCompiler.Submission(code, compiler, compileProblem)
+#     compileProblem = myCompiler.problemFromDatebase(prob)
     
-    sub.createSubmission()
+#     sub = myCompiler.Submission(code, compiler, compileProblem)
     
-    return "Submitted: " + str(sub.results)
+#     sub.createSubmission()
+    
+#     return "Submitted: " + str(sub.results)

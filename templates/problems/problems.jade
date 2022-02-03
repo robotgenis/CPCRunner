@@ -1,0 +1,21 @@
+extends ./libs/layout.jade
+
+block content 
+  include ./libs/nav.jade
+  .container 
+    .row
+      .col-sm-2 
+      .col-lg-8
+        .jumbotron 
+          h1.display-4 Problems
+          table.table.table-hover
+            thead
+              tr
+                th(scope="col") ID 
+                th(scope="col") Name 
+            tobdy
+            each val in problems
+              tr.clickable(data-href="/test")
+                th(scope="row")= val[0]
+                th= val[1]
+      .col-sm-2
