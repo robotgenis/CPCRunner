@@ -92,5 +92,9 @@ ENV/
 # Visual Studio Code
 .vscode/
 
-# secrets
+#formating doc for cornflakes python linter
+setup.cfg 
+
+
+# secrets VERY IMPORTANT
 secrets.py

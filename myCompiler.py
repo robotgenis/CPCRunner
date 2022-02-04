@@ -9,28 +9,32 @@ url = "https://api.jdoodle.com/v1/execute"
 
 
 class TestCase:
-    def __init__(self, inpu:str, outp:str):
+    def __init__(self, inpu: str, outp: str):
         self.input = inpu
         self.output = outp.strip()
-    def checkOutput(self, checkStr:str):
+
+    def checkOutput(self, checkStr: str):
         return checkStr.strip() == self.output
 
+
 class Problem:
-    def __init__(self, testCast:TestCase, timeLimit:float, memoryLimit:int):
+    def __init__(self, testCast: TestCase, timeLimit: float, memoryLimit: int):
         self.testCase = testCast
         self.timeLimit = timeLimit
         self.memoryLimit = memoryLimit
 
+
 class Submission:
-    def __init__(self, source:str, compiler:str, problem:Problem):
+    def __init__(self, source: str, compiler: str, problem: Problem):
         self.source = source
         self.compiler = compiler
         self.problem = problem
         self.output = None
         self.results = None
+
     def createSubmission(self):
         if not(self.compiler in constants.COMPILERS):
-            print("Compiler Doesn't Exist") 
+            print("Compiler Doesn't Exist")
             return
         data = {
             "clientId":  clientId,
@@ -42,15 +46,16 @@ class Submission:
         }
         headers = {'Content-type': 'application/json'}
         print("Running Submission", data)
-        
+
         content = requests.post(url, data=json.dumps(data), headers=headers).content
         # content = b'{"output":"2\\n","statusCode":200,"memory":"8152","cpuTime":"0.00"}'
-        
+
         self.output = json.loads(content.decode('ascii'))
         self.checkSubmission()
         print("Conent", content)
         print("Output", self.output)
         print("Results", self.results)
+
     def checkSubmission(self):
         if not self.output:
             self.results = {'statusCode': constants.STATUS_NOT_COMPLETE}
@@ -69,25 +74,25 @@ class Submission:
             return
         self.results['statusCode'] = constants.STATUS_WRONG_ANSWER
         return
-   
+
+
 def problemFromDatebase(problem):
     tc = TestCase(problem['testCase']['input'], problem['testCase']['output'])
-    
+
     return Problem(tc, problem['timeLimit'], problem['memoryLimit'])
-            
+
+
 if __name__ == "__main__":
     # API usage
-    
+
     tc = TestCase("1 1", "2")
-    
+
     p = Problem(tc, 1, 1000000)
-    
+
     src = """
 print(sum(list(map(int,input().split()))))
 """
-    
-    s = Submission(src, constants.COMPILER_PYTHON3, p)
-    
-    s.createSubmission()
 
-    
+    s = Submission(src, constants.COMPILER_PYTHON3, p)
+
+    s.createSubmission()

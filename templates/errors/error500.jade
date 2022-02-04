@@ -1,0 +1,11 @@
+extends ./libs/layout.jade
+
+block content
+  include ./libs/nav.jade
+  .container-fluid
+    .row
+      .col-lg-12.border.p-5
+        h1.display-4 ERROR 500
+        p An internal error occured while trying to process your request.
+          a(href="/") Back to home
+          | .
