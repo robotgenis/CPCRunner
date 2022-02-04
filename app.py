@@ -11,16 +11,6 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 def send_public(path):
     return send_from_directory('public', path)
 
-# @app.route('/problem/<path:path>')
-# def send_problem(path):
-#     prob = myDatabase.getProblem(path)
-    
-#     if not prob: return redirect("/")
-    
-#     problems = myDatabase.getShownProblemsIDs()
-    
-#     return render_template("problem.jade",visual=prob['visual'], problems=problems, id=prob['id'])
-
 # @app.route("/submission", methods=['get'])
 # def submission():
 #     id = ""
@@ -31,7 +21,7 @@ def send_public(path):
     
 #     return render_template("submission.jade", problems=problems, id=id)
     
-#open pages
+#basic pages
 @app.route("/", methods=['get'])
 def home():
     return render_template("pages/index.jade")
@@ -48,9 +38,17 @@ def about():
 
 @app.route('/problems', methods=['get'])
 def problems():
-    arr = mySQLDatabase.PROBLEMS_getProblemsInfo()
+    arr = mySQLDatabase.PROBLEMS_getProblemsListString()
     
     return render_template("problems/problems.jade", problems=arr)
+
+@app.route('/problem/<path:path>')
+def send_problem(path):
+    arr = mySQLDatabase.PROBLEMS_getProblemString(int(path))
+    
+    if len(arr) == 0: return redirect("/")
+    
+    return render_template("problems/problemPage.jade", problem=arr[0])
 
 # @app.route("/submit", methods=['post'])
 # def submit():

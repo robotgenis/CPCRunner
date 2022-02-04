@@ -11,8 +11,10 @@ block content
               tr
                 th(scope="col") ID 
                 th(scope="col") Name 
+                th(scope="col") Difficulty 
             tobdy
             each val in problems
-              tr.clickable(data-href="/test")
+              tr.clickable(data-href=("/problem/" + val[0]))
                 th(scope="row")= val[0]
                 th= val[1]
+                th= val[2]

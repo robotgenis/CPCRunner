@@ -1,0 +1,45 @@
+extends ./libs/layout.jade
+
+block content 
+  include ./libs/nav.jade
+  .container-fluid
+    .row
+      .col-lg-9.border.p-5
+        h1.display-4= problem[1]
+        p= problem[2]
+        h4 Input
+        p= problem[3]
+        h4 Output
+        p= problem[4]
+        h4 Example
+        .container
+          .row
+            .col-sm-4.border.border-info.myCode(role="button", data-toggle="popover", data-trigger="focus", title="Dismissible popover")
+              p
+                pre= problem[5]
+            .col-sm-4.border.border-info.myCode
+              p
+                pre= problem[6]
+      .col-lg-3.border.p-3
+        h6 Submissions
+        .w-100.p-1
+          button.w-100.btn.btn-success(type="button") Submit
+        .w-100.p-1
+          button.w-100.btn.btn-secondary(type="button") My Submission
+        .p-3
+        h6 Problem Conditions
+        table
+          tobdy
+            tr
+              th Time limit:
+              th= problem[7] + "s"
+            tr
+              th.pr-4 Memory limit:
+              th= problem[8]
+            tr
+              th Difficulty:
+              th= problem[9]
+  .toast-container(style="z-index: 11; position: absolute; bottom: 10px; left: 10px;")
+    #copy-toast.toast.align-items-center(role="alert", aria-live="assertive", aria-atomic="true", data-bs-delay="1000")
+      .d-flex
+        .toast-body Example has been copied!

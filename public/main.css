@@ -1,0 +1,16 @@
+.myCode{
+	font-family: 'Consolas', 'Monaco', 'Courier New';
+}
+
+.myCode::before{
+	content: "COPY";
+	position: absolute;
+	top: 0px;
+	right: 5px;
+	color: var(--info);
+}
+
+.myCode:hover::before{
+	content: "CLICK TO COPY";
+	color: var(--primary);
+}
