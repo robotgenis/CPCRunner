@@ -1,6 +1,6 @@
 
 import requests
-import constants
+import compilerConstants
 import json
 
 clientId = "8d4f846be4e1d90c42a9dd64fc544cd"
@@ -33,7 +33,7 @@ class Submission:
         self.results = None
 
     def createSubmission(self):
-        if not(self.compiler in constants.COMPILERS):
+        if not(self.compiler in compilerConstants.COMPILERS):
             print("Compiler Doesn't Exist")
             return
         data = {
@@ -41,7 +41,7 @@ class Submission:
             "clientSecret": clientSecret,
             "script": self.source,
             "language": self.compiler,
-            "versionIndex": str(constants.VERSIONS[self.compiler]),
+            "versionIndex": str(compilerConstants.VERSIONS[self.compiler]),
             "stdin": self.problem.testCase.input,
         }
         headers = {'Content-type': 'application/json'}
@@ -58,21 +58,21 @@ class Submission:
 
     def checkSubmission(self):
         if not self.output:
-            self.results = {'statusCode': constants.STATUS_NOT_COMPLETE}
+            self.results = {'statusCode': compilerConstants.STATUS_NOT_COMPLETE}
             return self.results
         self.results = {'statusCode': self.output['statusCode']}
         if self.output['statusCode'] != 200:
             return
         if float(self.output['cpuTime']) > self.problem.timeLimit:
-            self.results['statusCode'] = constants.STATUS_TIME_LIMIT_EXCEDED
+            self.results['statusCode'] = compilerConstants.STATUS_TIME_LIMIT_EXCEDED
             return
         if int(self.output['memory']) > self.problem.memoryLimit:
-            self.results['statusCode'] = constants.STATUS_MEMORY_LIMIT_EXCEDED
+            self.results['statusCode'] = compilerConstants.STATUS_MEMORY_LIMIT_EXCEDED
             return
         if self.problem.testCase.checkOutput(self.output['output']):
-            self.results['statusCode'] = constants.STATUS_ACCEPTED
+            self.results['statusCode'] = compilerConstants.STATUS_ACCEPTED
             return
-        self.results['statusCode'] = constants.STATUS_WRONG_ANSWER
+        self.results['statusCode'] = compilerConstants.STATUS_WRONG_ANSWER
         return
 
 
@@ -93,6 +93,6 @@ if __name__ == "__main__":
 print(sum(list(map(int,input().split()))))
 """
 
-    s = Submission(src, constants.COMPILER_PYTHON3, p)
+    s = Submission(src, compilerConstants.COMPILER_PYTHON3, p)
 
     s.createSubmission()

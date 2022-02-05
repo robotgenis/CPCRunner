@@ -1,0 +1,21 @@
+extends ./libs/layout.jade
+
+block content 
+  include ./libs/nav.jade
+  .container-fluid
+    .row
+      include ./libs/backArrow.jade
+      .col-lg-12.border.p-5
+        h1.display-4= "Submit Problem: " + problem[1]
+        form(method="post")
+          fieldset
+            .form-group
+              label(for="compilerSelect") Select Compiler 
+              select#compilerSelect.form-select.form-control(name="compiler" style="width: 150px;")
+                each val in compilers
+                  option(value=(val[1]))= val[0]
+            .form-group 
+              label(for="codeTextarea") Enter Code
+              textarea#codeTextarea.form-control(name="code", cols="60", rows="10", style="font-size: 14px;")
+            .form-group
+              button.btn.btn-success.float-right(type="submit") Submit Code

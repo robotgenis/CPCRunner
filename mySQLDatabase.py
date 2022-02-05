@@ -13,7 +13,7 @@ def executeCommandCommit(cmd: str):
     cnxn.close()
 
 
-def executeCommandFetchAll(cmd: str):
+def executeCommandFetchAll(cmd: str) -> list:
     cnxn = pyodbc.connect(connectStr)
     cursor = cnxn.cursor()
     cursor.execute(cmd)
@@ -53,6 +53,19 @@ def PROBLEMS_getProblemString(id: int) -> list:
             arr[i][k] = arr[i][k].replace("\\n", "\n")
 
     return arr
+
+
+def PROBLEMS_getProblemNameString(id: int) -> list:
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+
+    for i in range(len(arr)):
+        arr[i][0] = str(arr[i][0])
+
+    return arr
+
+
+def PROBLEMS_getProblemTest(id: int) -> list:
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
 
 
 if __name__ == "__main__":

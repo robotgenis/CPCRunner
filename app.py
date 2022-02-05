@@ -1,6 +1,4 @@
-from dataclasses import dataclass
-from urllib import response
-from flask import Flask, request, send_from_directory, redirect, render_template, abort
+from flask import Flask, send_from_directory, render_template, abort, request
 import mySQLDatabase
 import myCompiler
 
@@ -19,20 +17,8 @@ def error_500(e):
 
 
 @app.route('/public/<path:path>')
-def send_public(path):
+def public(path):
     return send_from_directory('public', path)
-
-# @app.route("/submission", methods=['get'])
-# def submission():
-#     id = ""
-#     if("id" in request.args):
-#         id = request.args['id']
-
-#     problems = myDatabase.getShownProblemsIDs()
-
-#     return render_template("submission.jade", problems=problems, id=id)
-
-# basic pages
 
 
 @app.route("/", methods=['get'])
@@ -57,33 +43,38 @@ def problems():
     return render_template("problems/problems.jade", problems=arr)
 
 
-@app.route('/problem/<path:path>')
-def send_problem(path):
+@app.route('/problem/<path:path>', methods=['get'])
+def problemPage(path):
     arr = mySQLDatabase.PROBLEMS_getProblemString(int(path))
 
     if len(arr) == 0:
         return abort(404)
 
-    return render_template("problems/problemPage.jade", problem=arr[0])
+    prob = arr[0]
 
-# @app.route("/submit", methods=['post'])
-# def submit():
-#     form = request.form.to_dict()
+    prob[5] = zip(prob[5].split("\\r"), prob[6].split("\\r"))
 
-#     compiler = form['compiler']
-#     problem = form['problem']
-#     code = form['code']
+    return render_template("problems/problemPage.jade", problem=prob)
 
-#     print(compiler, problem, code)
 
-#     prob = myDatabase.getProblem(problem)
+@app.route("/submission/<path:path>", methods=['get'])
+def submissionPage(path):
+    arr = mySQLDatabase.PROBLEMS_getProblemNameString(int(path))
 
-#     if not prob: return "ERROR"
+    if len(arr) == 0:
+        return abort(404)
 
-#     compileProblem = myCompiler.problemFromDatebase(prob)
+    return render_template("/problems/submission.jade", problem=arr[0], compilers=myCompiler.compilerConstants.COMPILERS_PUBLIC)
 
-#     sub = myCompiler.Submission(code, compiler, compileProblem)
 
-#     sub.createSubmission()
+@app.route("/submission/<path:path>", methods=['post'])
+def submit(path):
+    id = int(path)
 
-#     return "Submitted: " + str(sub.results)
+    compiler = request.form['compiler']
+
+    code = request.form['code']
+
+    print(id, compiler, code)
+
+    return "Done"

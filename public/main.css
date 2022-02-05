@@ -2,6 +2,14 @@
 	font-family: 'Consolas', 'Monaco', 'Courier New';
 }
 
+.myCode.myCode-input::before{
+	content: "INPUT";
+}
+
+.myCode.myCode-output::before{
+	content: "OUTPUT";
+}
+
 .myCode::before{
 	content: "COPY";
 	position: absolute;

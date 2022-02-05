@@ -5,16 +5,16 @@ block content
   .container-fluid
     .row
       .col-lg-12.border.p-5
-          h1.display-4 Problems
-          table.table.table-hover
-            thead
-              tr
-                th(scope="col") ID 
-                th(scope="col") Name 
-                th(scope="col") Difficulty 
-            tobdy
-            each val in problems
-              tr.clickable(data-href=("/problem/" + val[0]))
-                th(scope="row")= val[0]
-                th= val[1]
-                th= val[2]
+        h1.display-4 Problems
+        table.table.table-hover
+          thead
+            tr
+              th(scope="col") ID 
+              th(scope="col") Name 
+              th(scope="col") Difficulty 
+          tobdy
+          each val in problems
+            tr.clickable(data-href=("/problem/" + val[0]))
+              th(scope="row")= val[0]
+              th= val[1]
+              th= val[2]

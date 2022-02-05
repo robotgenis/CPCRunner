@@ -4,6 +4,7 @@ block content
   include ./libs/nav.jade
   .container-fluid
     .row
+      include ./libs/backArrow.jade
       .col-lg-9.border.p-5
         h1.display-4= problem[1]
         p= problem[2]
@@ -12,18 +13,19 @@ block content
         h4 Output
         p= problem[4]
         h4 Example
-        .container
-          .row
-            .col-sm-4.border.border-info.myCode(role="button", data-toggle="popover", data-trigger="focus", title="Dismissible popover")
-              p
-                pre= problem[5]
-            .col-sm-4.border.border-info.myCode
-              p
-                pre= problem[6]
+        each val in problem[5]
+          .container.mb-4
+            .row
+              .col-sm-4.border.border-info.myCode.myCode-input
+                p
+                  pre= val[0]
+              .col-sm-4.border.border-info.myCode.myCode-output
+                p
+                  pre= val[1]
       .col-lg-3.border.p-3
         h6 Submissions
         .w-100.p-1
-          button.w-100.btn.btn-success(type="button") Submit
+          a.w-100.btn.btn-success(role="button", href=("/submission/" + problem[0])) Submit
         .w-100.p-1
           button.w-100.btn.btn-secondary(type="button") My Submission
         .p-3
