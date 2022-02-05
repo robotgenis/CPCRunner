@@ -65,7 +65,13 @@ def PROBLEMS_getProblemNameString(id: int) -> list:
 
 
 def PROBLEMS_getProblemTest(id: int) -> list:
-    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemRunInput, ProblemRunOutput, ProblemRunCheckFunction, TimeLimit, MemoryLimit, Difficulty FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+
+    for i in range(len(arr)):
+        for k in range(1, 3):
+            arr[i][k] = arr[i][k].replace("\\n", "\n")
+
+    return arr
 
 
 if __name__ == "__main__":

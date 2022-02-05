@@ -75,6 +75,19 @@ def submit(path):
 
     code = request.form['code']
 
-    print(id, compiler, code)
+    arr = mySQLDatabase.PROBLEMS_getProblemTest(id)
 
-    return "Done"
+    if len(arr) == 0:
+        return abort(404)
+
+    prob = arr[0]
+
+    testCase = myCompiler.TestCase(prob[1], prob[2], prob[3])
+
+    problem = myCompiler.Problem(testCase, float(prob[4]), int(prob[5]))
+
+    submission = myCompiler.Submission(code, compiler, problem)
+
+    submission.createSubmission()
+
+    return submission.results

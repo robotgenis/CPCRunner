@@ -1,4 +1,3 @@
-
 import requests
 import compilerConstants
 import json
@@ -9,9 +8,10 @@ url = "https://api.jdoodle.com/v1/execute"
 
 
 class TestCase:
-    def __init__(self, inpu: str, outp: str):
+    def __init__(self, inpu: str, outp: str, check: str):
         self.input = inpu
         self.output = outp.strip()
+        self.check = check
 
     def checkOutput(self, checkStr: str):
         return checkStr.strip() == self.output
@@ -76,23 +76,18 @@ class Submission:
         return
 
 
-def problemFromDatebase(problem):
-    tc = TestCase(problem['testCase']['input'], problem['testCase']['output'])
-
-    return Problem(tc, problem['timeLimit'], problem['memoryLimit'])
-
-
 if __name__ == "__main__":
+    pass
     # API usage
 
-    tc = TestCase("1 1", "2")
+#     tc = TestCase("1 1", "2")
 
-    p = Problem(tc, 1, 1000000)
+#     p = Problem(tc, 1, 1000000)
 
-    src = """
-print(sum(list(map(int,input().split()))))
-"""
+#     src = """
+# print(sum(list(map(int,input().split()))))
+# """
 
-    s = Submission(src, compilerConstants.COMPILER_PYTHON3, p)
+#     s = Submission(src, compilerConstants.COMPILER_PYTHON3, p)
 
-    s.createSubmission()
+#     s.createSubmission()
