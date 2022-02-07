@@ -64,10 +64,10 @@ class Submission:
         if self.output['statusCode'] != 200:
             return
         if float(self.output['cpuTime']) > self.problem.timeLimit:
-            self.results['statusCode'] = compilerConstants.STATUS_TIME_LIMIT_EXCEDED
+            self.results['statusCode'] = compilerConstants.STATUS_TIME_LIMIT_EXCEEDED
             return
         if int(self.output['memory']) > self.problem.memoryLimit:
-            self.results['statusCode'] = compilerConstants.STATUS_MEMORY_LIMIT_EXCEDED
+            self.results['statusCode'] = compilerConstants.STATUS_MEMORY_LIMIT_EXCEEDED
             return
         if self.problem.testCase.checkOutput(self.output['output']):
             self.results['statusCode'] = compilerConstants.STATUS_ACCEPTED

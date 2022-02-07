@@ -1,0 +1,39 @@
+extends ./libs/layout.jade
+
+if (submission[4] == 1500)
+  - var codeStyle = "success"
+elif (submission[4] >= 1400 and submission[4] <= 1499)
+  - var codeStyle = "warning"
+else 
+  - var codeStyle = "danger"
+
+block content 
+  include ./libs/nav.jade
+  .container-fluid
+    .row
+      .col-lg-12.border.p-5
+        h1.display-4= ("Submission #" + submission[0] + "-" + submission[2])
+        .row.m-3
+          .border.border-primary.rounded.w-auto.p-2(class=("border-" + codeStyle))
+            h4
+              if (submission[4] == 1100)
+                | TIME LIMIT EXCEEDED
+              elif (submission[4] == 1200)
+                | MEMORY LIMIT EXCEEDED
+              elif (submission[4] == 1300)
+                | WRONG ANSWER
+              elif (submission[4] >= 1400 and submission[4] <= 1499)
+                | Progress: !{submission[4] - 1400}%
+              elif (submission[4] == 1500)
+                | CORRECT ANSWER
+              else
+                | UNKNOWN ISSUE<br>This could be an error in the submission code, or an internal server error.
+
+        h4 Submited Code
+        p= ("Compiler: " + compiler)
+        .container
+          .row
+            .col-lg-12.border.rounded(style="max-height: 600px; overflow: auto;", class=("border-" + codeStyle))
+              p
+                pre= submission[3]
+        

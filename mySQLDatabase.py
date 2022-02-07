@@ -1,11 +1,13 @@
 from secrets import connectStr
+import json
 import pyodbc
 
 DATABASE_USERACCOUNTS = "[dbo].[UserAccounts]"
 DATABASE_PROBLEMS = "[dbo].[Problems]"
+DATABASE_SUBMISSIONS = "[dbo].[Submissions]"
 
 
-def executeCommandCommit(cmd: str):
+def executeCommandCommit(cmd: str) -> None:
     cnxn = pyodbc.connect(connectStr)
     cursor = cnxn.cursor()
     cursor.execute(cmd)
@@ -41,8 +43,8 @@ def PROBLEMS_getProblemsListString() -> list:
     return arr
 
 
-def PROBLEMS_getProblemString(id: int) -> list:
-    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName, ProblemDescription, ProblemInput, ProblemOutput, ProblemExampleInput, ProblemExampleOutput, TimeLimit, MemoryLimit, Difficulty FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+def PROBLEMS_getProblemString(problemID: int) -> list:
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName, ProblemDescription, ProblemInput, ProblemOutput, ProblemExampleInput, ProblemExampleOutput, TimeLimit, MemoryLimit, Difficulty FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(problemID)}")
 
     for i in range(len(arr)):
         arr[i][0] = str(arr[i][0])
@@ -55,8 +57,8 @@ def PROBLEMS_getProblemString(id: int) -> list:
     return arr
 
 
-def PROBLEMS_getProblemNameString(id: int) -> list:
-    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+def PROBLEMS_getProblemNameString(problemID: int) -> list:
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemName FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(problemID)}")
 
     for i in range(len(arr)):
         arr[i][0] = str(arr[i][0])
@@ -64,8 +66,8 @@ def PROBLEMS_getProblemNameString(id: int) -> list:
     return arr
 
 
-def PROBLEMS_getProblemTest(id: int) -> list:
-    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemRunInput, ProblemRunOutput, ProblemRunCheckFunction, TimeLimit, MemoryLimit, Difficulty FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(id)}")
+def PROBLEMS_getProblemTest(problemID: int) -> list:
+    arr = executeCommandFetchAll(f"SELECT ProblemID, ProblemRunInput, ProblemRunOutput, ProblemRunCheckFunction, TimeLimit, MemoryLimit, Difficulty FROM {DATABASE_PROBLEMS} WHERE ProblemID={str(problemID)}")
 
     for i in range(len(arr)):
         for k in range(1, 3):
@@ -74,11 +76,174 @@ def PROBLEMS_getProblemTest(id: int) -> list:
     return arr
 
 
+def SUBMISSIONS_createSubmission(submissionId: int, submissionUserId: int, submissionProblemId: int, submissionCode: str, submissionOutput: str, submissionStatus: int, submissionCompiler: str) -> None:
+    submissionCode = json.dumps(submissionCode)
+    submissionCode = submissionCode.replace("'", "''")
+
+    submissionOutput = json.dumps(submissionOutput)
+    submissionOutput = submissionOutput.replace("'", "''")
+
+    executeCommandCommit(f"INSERT INTO {DATABASE_SUBMISSIONS} (SubmissionID, SubmissionUserID, SubmissionProblemID, SubmissionCode, SubmissionOutput, SubmissionStatus, SubmissionCompiler) VALUES ({str(submissionId)}, {str(submissionUserId)}, {str(submissionProblemId)}, '{submissionCode}', '{submissionOutput}', {str(submissionStatus)}, '{submissionCompiler}')")
+
+
+def SUBMISSIONS_getSubmissionString(submissionId: int):
+    arr = executeCommandFetchAll(f"SELECT SubmissionID, SubmissionUserID, SubmissionProblemID, SubmissionCode, SubmissionStatus, SubmissionCompiler FROM {DATABASE_SUBMISSIONS} WHERE SubmissionID={str(submissionId)}")
+
+    for i in range(len(arr)):
+        arr[i][0] = str(arr[i][0])
+        arr[i][1] = str(arr[i][1])
+        arr[i][2] = str(arr[i][2])
+        arr[i][3] = json.loads(arr[i][3])
+
+    return arr
+
+
 if __name__ == "__main__":
     # print(ACCOUNT_getUniqueIDNumber())
 
-    print(PROBLEMS_getProblemsListString())
-    print(PROBLEMS_getProblemString(1))
+    # print(PROBLEMS_getProblemsListString())
+    # print(PROBLEMS_getProblemString(1))
+
+    # print("'" == "\'")
+
+    SUBMISSIONS_createSubmission(3, 2, 3, """this is a test statement
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    \'  \' ' ' '' \" \"""", "out", 1200, "python3")
+    print(SUBMISSIONS_getSubmissionString(3))
 
     # ACCOUNT_createAccount("Danny", "Kaja")
 

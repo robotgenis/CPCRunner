@@ -13,7 +13,7 @@ def error_404(e):
 
 @app.errorhandler(500)
 def error_500(e):
-    return render_template("errors/error404.jade"), 500
+    return render_template("errors/error500.jade"), 500
 
 
 @app.route('/public/<path:path>')
@@ -90,4 +90,25 @@ def submit(path):
 
     submission.createSubmission()
 
+    status = submission.results['status']
+
+    if status == myCompiler.compilerConstants.STATUS_NOT_COMPLETE or status < 1000:
+        abort(500)
+
     return submission.results
+
+
+@app.route("/viewsubmission/<path:path>", methods=['get'])
+def viewSubmission(path):
+    arr = mySQLDatabase.SUBMISSIONS_getSubmissionString(int(path))
+
+    if len(arr) == 0:
+        abort(404)
+
+    compiler = "None"
+    for i in myCompiler.compilerConstants.COMPILERS_PUBLIC:
+        if i[1] == arr[0][5]:
+            compiler = i[0]
+            break
+
+    return render_template("/submissions/submissionTemplate.jade", submission=arr[0], compiler=compiler)
