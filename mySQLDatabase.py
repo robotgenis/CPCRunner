@@ -1,4 +1,4 @@
-from secrets import connectStr
+from mySecrets import connectStr
 import json
 import pyodbc
 
@@ -76,14 +76,22 @@ def PROBLEMS_getProblemTest(problemID: int) -> list:
     return arr
 
 
-def SUBMISSIONS_createSubmission(submissionId: int, submissionUserId: int, submissionProblemId: int, submissionCode: str, submissionOutput: str, submissionStatus: int, submissionCompiler: str) -> None:
+def SUBMISSIONS_getUniqueIDNumber() -> int:
+    return executeCommandFetchAll(f"SELECT MAX(submissionId) FROM {DATABASE_SUBMISSIONS}")[0][0] + 1
+
+
+def SUBMISSIONS_createSubmission(submissionUserId: int, submissionProblemId: int, submissionCompiler: str, submissionCode: str, submissionOutput: str, submissionStatus: int) -> str:
+    submissionId = SUBMISSIONS_getUniqueIDNumber()
+
     submissionCode = json.dumps(submissionCode)
     submissionCode = submissionCode.replace("'", "''")
 
     submissionOutput = json.dumps(submissionOutput)
     submissionOutput = submissionOutput.replace("'", "''")
 
-    executeCommandCommit(f"INSERT INTO {DATABASE_SUBMISSIONS} (SubmissionID, SubmissionUserID, SubmissionProblemID, SubmissionCode, SubmissionOutput, SubmissionStatus, SubmissionCompiler) VALUES ({str(submissionId)}, {str(submissionUserId)}, {str(submissionProblemId)}, '{submissionCode}', '{submissionOutput}', {str(submissionStatus)}, '{submissionCompiler}')")
+    executeCommandCommit(f"INSERT INTO {DATABASE_SUBMISSIONS} (SubmissionID, SubmissionUserID, SubmissionProblemID, SubmissionCompiler, SubmissionCode, SubmissionOutput, SubmissionStatus) VALUES ({str(submissionId)}, {str(submissionUserId)}, {str(submissionProblemId)}, '{submissionCompiler}', '{submissionCode}', '{submissionOutput}', {str(submissionStatus)})")
+
+    return str(submissionId)
 
 
 def SUBMISSIONS_getSubmissionString(submissionId: int):
@@ -98,154 +106,18 @@ def SUBMISSIONS_getSubmissionString(submissionId: int):
     return arr
 
 
-if __name__ == "__main__":
-    # print(ACCOUNT_getUniqueIDNumber())
+# if __name__ == "__main__":
+#     # print(ACCOUNT_getUniqueIDNumber())
 
-    # print(PROBLEMS_getProblemsListString())
-    # print(PROBLEMS_getProblemString(1))
+#     # print(PROBLEMS_getProblemsListString())
+#     # print(PROBLEMS_getProblemString(1))
 
-    # print("'" == "\'")
+#     # print("'" == "\'")
 
-    SUBMISSIONS_createSubmission(3, 2, 3, """this is a test statement
-    
-    
-    
+#     SUBMISSIONS_createSubmission(2, 3, "python3", """Some cool code""", "out", 1500)
+#     print(SUBMISSIONS_getSubmissionString(3))
 
+#     # ACCOUNT_createAccount("Danny", "Kaja")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    \'  \' ' ' '' \" \"""", "out", 1200, "python3")
-    print(SUBMISSIONS_getSubmissionString(3))
-
-    # ACCOUNT_createAccount("Danny", "Kaja")
-
-    # a = executeCommandFetchAll(f"SELECT TOP (1000) * FROM {DATABASE_USERACCOUNTS}")
-    # print(a)
+#     # a = executeCommandFetchAll(f"SELECT TOP (1000) * FROM {DATABASE_USERACCOUNTS}")
+#     # print(a)

@@ -98,3 +98,4 @@ setup.cfg
 
 # secrets VERY IMPORTANT
 secrets.py
+mySecrets.py

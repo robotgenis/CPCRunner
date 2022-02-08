@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template, abort, request
+from flask import Flask, send_from_directory, render_template, abort, request, redirect
 import mySQLDatabase
 import myCompiler
 
@@ -7,8 +7,9 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
 
 @app.errorhandler(404)
-def error_404(e):
-    return render_template("errors/error404.jade"), 404
+async def error_404(e):
+    data = await render_template("errors/error404.jade")
+    return data, 404
 
 
 @app.errorhandler(500)
@@ -38,7 +39,9 @@ def about():
 
 @app.route('/problems', methods=['get'])
 def problems():
+    # st = time.time()
     arr = mySQLDatabase.PROBLEMS_getProblemsListString()
+    # total = time.time() - st
 
     return render_template("problems/problems.jade", problems=arr)
 
@@ -69,13 +72,19 @@ def submissionPage(path):
 
 @app.route("/submission/<path:path>", methods=['post'])
 def submit(path):
-    id = int(path)
+    problemId = int(path)
 
     compiler = request.form['compiler']
 
+    if not(compiler in myCompiler.compilerConstants.COMPILERS):
+        return abort(500)
+
     code = request.form['code']
 
-    arr = mySQLDatabase.PROBLEMS_getProblemTest(id)
+    if len(code) == 0:
+        return abort(500)
+
+    arr = mySQLDatabase.PROBLEMS_getProblemTest(problemId)
 
     if len(arr) == 0:
         return abort(404)
@@ -90,12 +99,16 @@ def submit(path):
 
     submission.createSubmission()
 
-    status = submission.results['status']
+    status = submission.results['statusCode']
 
     if status == myCompiler.compilerConstants.STATUS_NOT_COMPLETE or status < 1000:
         abort(500)
 
-    return submission.results
+    tempUserId = 1
+
+    submissionId = mySQLDatabase.SUBMISSIONS_createSubmission(tempUserId, problemId, compiler, code, submission.output, status)
+
+    return redirect("/viewsubmission/" + str(submissionId))
 
 
 @app.route("/viewsubmission/<path:path>", methods=['get'])

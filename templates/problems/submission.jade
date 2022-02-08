@@ -12,12 +12,12 @@ block content
           fieldset
             .form-group
               label(for="compilerSelect") Select Compiler 
-              select#compilerSelect.form-select.form-control(name="compiler" style="width: 150px;")
+              select#compilerSelect.form-select.form-control(name="compiler" style="width: 150px;", required="required")
                 each val in compilers
                   option(value=(val[1]))= val[0]
             .form-group 
               label(for="codeTextarea") Enter Code
-              textarea#codeTextarea.form-control(name="code", cols="60", rows="10", style="font-size: 14px;")
+              textarea#codeTextarea.form-control(name="code", cols="60", rows="10", style="font-size: 14px;", required="required")
             .form-group
               button.btn.btn-success.float-right(type="submit") Submit Code
   div#submitLoading(style="z-index: 15; position:fixed; width: 100%; height: 100%; top: 0px; left: 0px; background-color:rgba(0, 0, 0, 0.9); display: none;")
